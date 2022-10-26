@@ -17,11 +17,21 @@ class BaseModel():
 
         Args:
             **kwargs (dict): Key/value pairs of attributes.
-            *args (any): 
+            *args (any): won’t be used
         """
         self.id = str(uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
+
+        # Converting time string to datetime object
+        # Using strptime(date_string, format)
+        dtformat = "%Y-%m-%dT%H:%M:%S.%f"
+        if kwargs is not None:
+            for key, val in kwargs.items():
+                if key == "created_at" or key == "updated_at":
+                    self.__dict__[key] = datetime.strptime(val, dtformat)
+                else:
+                    self.__dict__[key] = val
 
     def save(self):
         """updates the public instance attribute updated_at with the current datetime"""
