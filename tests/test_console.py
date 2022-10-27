@@ -3,18 +3,19 @@
 Unittests for console.py
 
 Classes Unittested:
-    AirBnB_Console_Entry_prompting
+    HBNBCommand_prompting
 """
 
 import unittest
-from console import AirBnB_Console_Entry
+from console import HBNBCommand
+from models.base_model import BaseModel
 
 
-class Test_AirBnB_Console_Entry_prompting(unittest.TestCase):
+class Test_HBNBCommand_prompting(unittest.TestCase):
     """Unittests for testing prompting of the HBNB command interpreter."""
 
     def test_prompt_string(self):
-        self.assertEqual("(hbnb) ", AirBnB_Console_Entry.prompt)
+        self.assertEqual("(hbnb) ", HBNBCommand.prompt)
 
 
 if __name__ == "__main__":

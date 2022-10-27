@@ -5,6 +5,7 @@ BaseModel is a class that defines all common attributes/methods for other classe
 
 from datetime import datetime
 from uuid import uuid4
+import models
 
 
 class BaseModel():
@@ -32,10 +33,13 @@ class BaseModel():
                     self.__dict__[key] = datetime.strptime(val, dtformat)
                 else:
                     self.__dict__[key] = val
+        else:
+            models.storage.new(self)
 
     def save(self):
         """updates the public instance attribute updated_at with the current datetime"""
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """Returns a dictionary containing all keys/values of __dict__ of the instance

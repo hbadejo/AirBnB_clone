@@ -4,11 +4,11 @@
 import cmd
 from datetime import datetime
 import json
+# from models.base_model import BaseModel
 
 
-class AirBnB_Console_Entry(cmd.Cmd):
+class HBNBCommand(cmd.Cmd):
     """Defines the command line interpreter for the ALX AirBnB project.
-
 
     Attributes:
         prompt (str): Command input
@@ -18,8 +18,8 @@ class AirBnB_Console_Entry(cmd.Cmd):
     def do_create(self, arg):
         """Create data in a CRUD design
 
-        Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id. 
-        Ex: $ create BaseModel. 
+        Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id.
+        Ex: $ create BaseModel.
         If the class name is missing, print ** class name missing ** (ex: $ create)
         If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ create MyModel)
         """
@@ -28,7 +28,7 @@ class AirBnB_Console_Entry(cmd.Cmd):
     def do_show(sefl, arg):
         """Retrieve data in a CRUD design
 
-        Prints the string representation of an instance based on the class name and id. 
+        Prints the string representation of an instance based on the class name and id.
         Ex: $ show BaseModel 1234-1234-1234.
         If the class name is missing, print ** class name missing ** (ex: $ show)
         If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ show MyModel)
@@ -39,6 +39,10 @@ class AirBnB_Console_Entry(cmd.Cmd):
 
     def do_quit(self, arg):
         """Exit the terminal instance for the program"""
+        pass
+
+    def do_EOF(self):
+        """EOF signal to terminal instance for the program"""
         pass
 
     def do_destroy(self, arg):
@@ -61,6 +65,7 @@ class AirBnB_Console_Entry(cmd.Cmd):
         The printed result must be a list of strings(like the example below)
         If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ all MyModel)
         """
+        pass
 
     def do_update(self, arg):
         """Update data in a CRUD design
@@ -94,10 +99,6 @@ class AirBnB_Console_Entry(cmd.Cmd):
         """Handling empty command input"""
         pass
 
-    def do_EOF(self):
-        """EOF signal to terminal instance for the program"""
-        pass
-
 
 if __name__ == "__main__":
-    AirBnB_Console_Entry().cmdloop()
+    HBNBCommand().cmdloop()
