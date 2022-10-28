@@ -6,7 +6,7 @@ Deserializes JSON file to bac to Object instances
 """
 
 import json
-from base_model import BaseModel
+from models.base_model import BaseModel
 
 
 class FileStorage():
@@ -35,18 +35,21 @@ class FileStorage():
     def new(self, obj):
         """Sets in __objects the obj with key <obj class name>.id"""
         objectClassName = obj.__class__.__name__
-        __class__.__objects[f"{objectClassName}.{obj.id}"] = objectClassName
+        __class__.__objects[f"{objectClassName}.{obj.id}"] = obj
 
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
         classobject = __class__.__objects
+        print(f'Data from clobj: {classobject}')
         # Using Dict comprehension to implement "to_dict" on each
         # data instance in storage object
         objectdata = {data: classobject[data].to_dict()
                       for data in classobject.keys()}
+        print(f'data from objdata: {objectdata}')
         # Data serialization
-        with open(__class__.__file_path, "a") as s_file:
+        with open(__class__.__file_path, "w") as s_file:
             json.dump(objectdata, s_file)
+        # print(objectdata)
 
     def reload(self):
         """
@@ -57,5 +60,11 @@ class FileStorage():
         try:
             with open(__class__.__file_path) as s_file:
                 objectdata = json.load(s_file)
+                print(objectdata)
+                for data in objectdata.values():
+                    cls_name = data["__class__"]
+                    del data["__class__"]
+                    self.new(eval(cls_name)(**data))
+
         except FileNotFoundError:
             return
