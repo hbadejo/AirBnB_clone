@@ -21,13 +21,13 @@ class BaseModel():
             *args (any): won’t be used
         """
         self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        self.created_at = datetime.today()
+        self.updated_at = datetime.today()
 
         # Converting time string to datetime object
         # Using strptime(date_string, format)
         dtformat = "%Y-%m-%dT%H:%M:%S.%f"
-        if kwargs is not None:
+        if len(kwargs) != 0:
             for key, val in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     self.__dict__[key] = datetime.strptime(val, dtformat)
@@ -38,13 +38,13 @@ class BaseModel():
 
     def save(self):
         """updates the public instance attribute updated_at with the current datetime"""
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.today()
         models.storage.save()
 
     def to_dict(self):
         """Returns a dictionary containing all keys/values of __dict__ of the instance
 
-        This method will be the first piece of the serialization/deserialization process: 
+        This method will be the first piece of the serialization/deserialization process:
         create a dictionary representation with “simple object type” of our BaseModel
         """
         instance_attribute = self.__dict__.copy()

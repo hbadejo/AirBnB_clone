@@ -2,9 +2,13 @@
 """A file that define the AirBnB project console"""
 
 import cmd
-from datetime import datetime
-import json
-# from models.base_model import BaseModel
+from models.base_model import BaseModel
+from models import storage
+from shlex import split
+
+
+def commandList(arg):
+    return [i.strip(",") for i in split(arg)]
 
 
 class HBNBCommand(cmd.Cmd):
@@ -13,6 +17,8 @@ class HBNBCommand(cmd.Cmd):
     Attributes:
         prompt (str): Command input
     """
+
+    __mod = ["BaseModel"]
     prompt = "(hbnb) "
 
     def do_create(self, arg):
@@ -23,7 +29,14 @@ class HBNBCommand(cmd.Cmd):
         If the class name is missing, print ** class name missing ** (ex: $ create)
         If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ create MyModel)
         """
-        pass
+        command = commandList(arg)
+        if len(command) == 0:
+            print("** class name missing **")
+        elif command[0] not in HBNBCommand.__mod:
+            print("** class doesn't exist **")
+        else:
+            print(eval(command[0])().id)
+            storage.save()
 
     def do_show(sefl, arg):
         """Retrieve data in a CRUD design
@@ -39,11 +52,12 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, arg):
         """Exit the terminal instance for the program"""
-        pass
+        return True
 
     def do_EOF(self):
         """EOF signal to terminal instance for the program"""
-        pass
+        print("")
+        return True
 
     def do_destroy(self, arg):
         """Delete data in a CRUD design

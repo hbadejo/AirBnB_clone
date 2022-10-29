@@ -40,12 +40,10 @@ class FileStorage():
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
         classobject = __class__.__objects
-        print(f'Data from clobj: {classobject}')
         # Using Dict comprehension to implement "to_dict" on each
         # data instance in storage object
         objectdata = {data: classobject[data].to_dict()
                       for data in classobject.keys()}
-        print(f'data from objdata: {objectdata}')
         # Data serialization
         with open(__class__.__file_path, "w") as s_file:
             json.dump(objectdata, s_file)
@@ -60,11 +58,8 @@ class FileStorage():
         try:
             with open(__class__.__file_path) as s_file:
                 objectdata = json.load(s_file)
-                print(objectdata)
                 for data in objectdata.values():
-                    cls_name = data["__class__"]
-                    del data["__class__"]
-                    self.new(eval(cls_name)(**data))
-
+                    className = data["__class__"]
+                    self.new(eval(className)(data))
         except FileNotFoundError:
             return
