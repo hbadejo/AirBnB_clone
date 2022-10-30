@@ -85,9 +85,9 @@ class HBNBCommand(cmd.Cmd):
         """Exit the terminal instance for the program"""
         return True
 
-    def do_EOF(self):
+    def do_EOF(self, arg):
         """EOF signal to terminal instance for the program"""
-        print("")
+        # print("")
         return True
 
     def do_destroy(self, arg):
