@@ -5,6 +5,15 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 from shlex import split
+from models.user import User
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+
+
+objectData = storage.all()
 
 
 def commandList(arg):
@@ -16,9 +25,14 @@ class HBNBCommand(cmd.Cmd):
 
     Attributes:
         prompt (str): Command input
+
+        Private attribute:
+            __mod -> Hold allowable classes instance that can be created
     """
 
-    __mod = ["BaseModel"]
+    __mod = ["BaseModel", "User", "State",
+             "City", "Amenity", "Place", "Review"]
+
     prompt = "(hbnb) "
 
     def do_create(self, arg):
@@ -48,7 +62,18 @@ class HBNBCommand(cmd.Cmd):
         If the id is missing, print ** instance id missing ** (ex: $ show BaseModel)
         If the instance of the class name doesn’t exist for the id, print ** no instance found ** (ex: $ show BaseModel 121212)
         """
-        pass
+
+        command = commandList(arg)
+        if len(command) == 0:
+            print("** class name missing **")
+        elif command[0] not in HBNBCommand.__mod:
+            print("** class doesn't exist **")
+        elif len(command) == 1:
+            print("** instance id missing **")
+        elif f'{command[0]}.{command[1]}' not in objectData.keys():
+            print("** no instance found **")
+        else:
+            print(objectData[f'{command[0]}.{command[1]}'])
 
     def do_quit(self, arg):
         """Exit the terminal instance for the program"""
@@ -69,7 +94,18 @@ class HBNBCommand(cmd.Cmd):
         If the id is missing, print ** instance id missing ** (ex: $ destroy BaseModel)
         If the instance of the class name doesn’t exist for the id, print ** no instance found ** (ex: $ destroy BaseModel 121212)
         """
-        pass
+        command = commandList(arg)
+        if len(command) == 0:
+            print("** class name missing **")
+        elif command[0] not in HBNBCommand.__mod:
+            print("** class doesn't exist **")
+        elif len(command) == 1:
+            print("** instance id missing **")
+        elif f'{command[0]}.{command[1]}' not in objectData.keys():
+            print("** no instance found **")
+        else:
+            del objectData[f'{command[0]}.{command[1]}']
+            storage.save()
 
     def do_all(self, arg):
         """Retrieve data in a CRUD design
@@ -79,7 +115,17 @@ class HBNBCommand(cmd.Cmd):
         The printed result must be a list of strings(like the example below)
         If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ all MyModel)
         """
-        pass
+        command = commandList(arg)
+        dataList = []
+        if len(command) > 0 and command[0] not in HBNBCommand.__mod:
+            print("** class doesn't exist **")
+        else:
+            for data in objectData.values():
+                if len(command) == 0:
+                    dataList.append(str(data))
+                elif len(command) > 0 and command[0] == data.__class__.__name__:
+                    dataList.append(str(data))
+            print(dataList)
 
     def do_update(self, arg):
         """Update data in a CRUD design
@@ -106,8 +152,29 @@ class HBNBCommand(cmd.Cmd):
         id, created_at and updated_at cant’ be updated. 
         You can assume they won’t be passed in the update command
         Only “simple” arguments can be updated: string, integer and float. 
-        You can assume nobody will try to update list of ids or datetime"""
-        pass
+        You can assume nobody will try to update list of ids or datetime
+        """
+
+        command = commandList(arg)
+        if len(command) == 0:
+            print("** class name missing **")
+        elif command[0] not in HBNBCommand.__mod:
+            print("** class doesn't exist **")
+        elif len(command) == 1:
+            print("** instance id missing **")
+        elif f'{command[0]}.{command[1]}' not in objectData.keys():
+            print("** no instance found **")
+        elif len(command) == 2:
+            print("** attribute name missing **")
+        elif len(command) == 3:
+            print("** value missing **")
+        elif len(command) >= 4:
+            if command[2] in ["id", "created_at", "updated_at"]:
+                return False
+            else:
+                dictKeys = objectData[f'{command[0]}.{command[1]}']
+                dictKeys.__dict__[command[2]] = command[3]
+            storage.save()
 
     def emptyline(self):
         """Handling empty command input"""

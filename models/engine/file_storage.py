@@ -7,6 +7,12 @@ Deserializes JSON file to bac to Object instances
 
 import json
 from models.base_model import BaseModel
+from models.user import User
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
 
 
 class FileStorage():
@@ -35,7 +41,7 @@ class FileStorage():
     def new(self, obj):
         """Sets in __objects the obj with key <obj class name>.id"""
         objectClassName = obj.__class__.__name__
-        __class__.__objects[f"{objectClassName}.{obj.id}"] = obj
+        self.__class__.__objects[f"{objectClassName}.{obj.id}"] = obj
 
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
@@ -60,6 +66,10 @@ class FileStorage():
                 objectdata = json.load(s_file)
                 for data in objectdata.values():
                     className = data["__class__"]
-                    self.new(eval(className)(data))
+                    del data["__class__"]
+                    # Without the "**", the id value is recreated
+                    # leading to a different id for all data in storage
+                    # at every instantiation of reload
+                    self.new(eval(className)(**data))
         except FileNotFoundError:
             return
