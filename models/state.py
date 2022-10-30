@@ -10,7 +10,7 @@ class State(BaseModel):
     """
     Represent a state:
 
-    Public class attributes: 
+    Public class attributes:
         name: string -> Name of place
     """
 

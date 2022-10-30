@@ -11,7 +11,7 @@ class Amenity(BaseModel):
     """
     Represnt an Amenity:
 
-    Public class attributes: 
+    Public class attributes:
         name: string -> Amenity name
     """
 

@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-BaseModel is a class that defines all common attributes/methods for other classes:
+BaseModel is a class that defines all common
+    attributes/methods for other classes:
 """
 
 from datetime import datetime
@@ -37,15 +38,22 @@ class BaseModel():
             models.storage.new(self)
 
     def save(self):
-        """updates the public instance attribute updated_at with the current datetime"""
+        """
+        updates the public instance attribute updated_at
+            with the current datetime
+        """
         self.updated_at = datetime.today()
         models.storage.save()
 
     def to_dict(self):
-        """Returns a dictionary containing all keys/values of __dict__ of the instance
+        """
+        Returns a dictionary containing all keys/values
+            of __dict__ of the instance
 
-        This method will be the first piece of the serialization/deserialization process:
-        create a dictionary representation with “simple object type” of our BaseModel
+        This method will be the first piece of the
+            serialization/deserialization process:
+        create a dictionary representation with
+            “simple object type” of our BaseModel
         """
         instance_attribute = self.__dict__.copy()
         instance_attribute["created_at"] = self.created_at.isoformat()
@@ -54,5 +62,8 @@ class BaseModel():
         return instance_attribute
 
     def __str__(self):
-        """Return the informal str representation of the BaseModel instance."""
+        """
+        Return the informal str representation
+            of the BaseModel instance.
+        """
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
