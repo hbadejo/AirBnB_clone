@@ -82,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
             print(objectData[f'{command[0]}.{command[1]}'])
 
     def do_quit(self, arg):
-        """Exit the terminal instance for the program"""
+        """Exit the terminal instance for the program."""
         return True
 
     def do_EOF(self, arg):
@@ -98,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
         If the class name is missing,
             print ** class name missing ** (ex: $ destroy)
         If the class name doesn’t exist,
-            print ** class doesn't exist ** (ex:$ destroy MyModel)
+            print ** class doesn't exist ** (ex: $ destroy MyModel)
         If the id is missing,
             print ** instance id missing ** (ex: $ destroy BaseModel)
         If the instance of the class name doesn’t exist for the id,
