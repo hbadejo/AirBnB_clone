@@ -236,7 +236,10 @@ class HBNBCommand(cmd.Cmd):
                 command = [inp_funct[1][:pattern.span()[0]],
                            pattern.group()[1:-1]]
                 if command[0] in validCommand.keys():
-                    arg = f"{inp_funct[0]}"
+                    # value of command[1] will be id when suppplied
+                    # as an string within the parenthesis. Or it will
+                    # be an empty string
+                    arg = f"{inp_funct[0]} {command[1]}"
                     return validCommand[command[0]](arg)
         print(f"*** Unknown syntax: {line}")
         return False
