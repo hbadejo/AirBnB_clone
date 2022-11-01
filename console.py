@@ -2,6 +2,7 @@
 """A file that define the AirBnB project console"""
 
 import cmd
+import re
 from models.base_model import BaseModel
 from models import storage
 from shlex import split
@@ -197,6 +198,48 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Handling empty command input"""
         pass
+
+    def do_count(self, arg):
+        """
+        Retrieve the number of instances of a given class.
+        """
+        comamand = commandList(arg)
+        count = 0
+        for data in storage.all().values():
+            if comamand[0] == data.__class__.__name__:
+                count += 1
+        print(count)
+
+    def default(self, line: str) -> None:
+        """
+        Overiding default input type for cmd module
+        to accomodate for dot notation when input is invalid
+        """
+        validCommand = {
+            "create": self.do_create,
+            "all": self.do_all,
+            "destroy": self.do_destroy,
+            "update": self.do_update,
+            "show": self.do_show,
+            "count": self.do_count
+        }
+
+        # Regex for "."
+        # Captures "dot notation" and split commands base into a list
+        pattern = re.search(r"\.", line)
+        if pattern is not None:
+            inp_funct = [line[:pattern.span()[0]], line[pattern.span()[1]:]]
+            # Regex for "()"
+            # Captures the command with "parenthesis"
+            pattern = re.search(r"\((.*?)\)", inp_funct[1])
+            if pattern is not None:
+                command = [inp_funct[1][:pattern.span()[0]],
+                           pattern.group()[1:-1]]
+                if command[0] in validCommand.keys():
+                    arg = f"{inp_funct[0]}"
+                    return validCommand[command[0]](arg)
+        print(f"*** Unknown syntax: {line}")
+        return False
 
 
 if __name__ == "__main__":
