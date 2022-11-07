@@ -1,0 +1,27 @@
+/* Article styles */
+article {
+    border: 1px solid #ff5a5f;
+    border-radius: 4px;
+    display: inline-block;
+    width: 320px;
+    margin: 20px;
+    padding: 20px;
+}
+/* Article h2 style */
+article h2 {
+    font-size: 30px;
+    text-align: center;
+    width: 100%;
+    margin: 0%;
+}
+
+/* Places h1 style */
+.places h1 {
+    font-size: 30px;
+    text-align: left;
+}
+
+/* Places Style */
+.places {
+    text-align: center;
+}
